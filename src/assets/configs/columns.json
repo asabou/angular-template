@@ -1,0 +1,73 @@
+{
+    "players": {
+        "primaryIdentifiers": [
+            "id"
+        ],
+        "fields": [
+            {
+                "colId": "firstName",
+                "colName": "First name",
+                "colTooltip": "Player's first name",
+                "colClass": "w100",
+                "colType": "text",
+                "colMandatory": true,
+                "colVisible": true
+            },
+            {
+                "colId": "lastName",
+                "colName": "Last name",
+                "colTooltip": "Player's last name",
+                "colClass": "w100",
+                "colType": "text",
+                "colMandatory": true,
+                "colVisible": true
+            },
+            {
+                "colId": "birthDate",
+                "colName": "Birth date",
+                "colTooltip": "Player's birth date",
+                "colClass": "w100",
+                "colType": "date",
+                "colMandatory": false,
+                "colVisible": true
+            },
+            {
+                "colId": "nationality",
+                "colName": "Nationality",
+                "colTooltip": "Player's nationality",
+                "colClass": "w100",
+                "colType": "custom",
+                "colMandatory": false,
+                "colVisible": true
+            },
+            {
+                "colId": "salary",
+                "colName": "Salary",
+                "colTooltip": "Player's salary",
+                "colClass": "w100",
+                "colType": "text",
+                "colMandatory": false,
+                "colVisible": true
+            },
+            {
+                "colId": "photo",
+                "colName": "Photo",
+                "colTooltip": "Player's photo",
+                "colClass": "w100",
+                "colType": "custom",
+                "colMandatory": false,
+                "colVisible": false
+            },
+            {
+                "colId": "retired",
+                "colName": "Retired",
+                "colTooltip": "Is player retired?",
+                "colClass": "w100",
+                "colType": "bool",
+                "colMandatory": false,
+                "colVisible": true
+            }
+        ]
+        
+    }
+}

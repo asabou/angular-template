@@ -1,0 +1,23 @@
+    <div class="mat-elevation-z8" *ngIf="tableColumns && tableColumns.length">
+        <mat-table matSort [dataSource]="dataSource" multiTemplateDataRows>
+                <ng-container *ngFor="let col of tableColumns; let index as i" matColumnDef="{{ col.colId }}">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef  [ngClass]="col.colClass" title="{{ col.colTooltip }}"> {{ col.colName }} </mat-header-cell>
+                    <mat-cell *matCellDef="let row" [ngClass]="col.colClass">
+                        <ng-container>
+                            {{ getDisplayFormat(row[col.colId], index) }}
+                        </ng-container>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        {{ 'SMTH' }}
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="visibleColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: visibleColumns"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="objectList.length"
+            showFirstLastButtons>
+        </mat-paginator>
+    </div>
