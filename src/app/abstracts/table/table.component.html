@@ -1,23 +1,57 @@
-    <div class="mat-elevation-z8" *ngIf="tableColumns && tableColumns.length">
-        <mat-table matSort [dataSource]="dataSource" multiTemplateDataRows>
-                <ng-container *ngFor="let col of tableColumns; let index as i" matColumnDef="{{ col.colId }}">
-                    <mat-header-cell mat-sort-header *matHeaderCellDef  [ngClass]="col.colClass" title="{{ col.colTooltip }}"> {{ col.colName }} </mat-header-cell>
-                    <mat-cell *matCellDef="let row" [ngClass]="col.colClass">
-                        <ng-container>
-                            {{ getDisplayFormat(row[col.colId], index) }}
-                        </ng-container>
-                    </mat-cell>
+<div class="d-flex">
+    <div class="fw-bold" title="{{ caption }}" *ngIf="caption">{{ caption }}</div>
+    <mat-icon class="button" style="margin-left: 10px" (click)="onAdd()" title="Add"
+        *ngIf="displayActionsContains('add')">
+        add_circle_outline
+    </mat-icon>
+    <!-- <mat-icon class="button button--flat" style="margin-left: 10px;" (click)="openFilterColumns()"
+        title="Filter/Arrange columns" *ngIf="displayActionsContains('filter')">filter_list</mat-icon>
+    <app-csv-download *ngIf="displayActionsContains('download') && objectList && objectList.length" [title]="tableId"
+        [items]="objectList">
+    </app-csv-download>
+    <mat-icon class="button button--flat" style="margin-left: 10px" (click)="dragDrop.emit(objectList)" title="Sort"
+        *ngIf="displayActionsContains('sort')">
+        sort
+    </mat-icon>
+    <mat-icon class="button button--flat" style="margin-left: 10px" (click)="cancelSort()" title="Cancel sort"
+        *ngIf="displayActionsContains('cancel-sort')">
+        backspace
+    </mat-icon> -->
+</div>
+<div class="mat-elevation-z8" *ngIf="tableColumns && tableColumns.length">
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container *ngFor="let col of tableColumns; let index as i" matColumnDef="{{ col.colId }}">
+            <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="col.colClass" title="{{ col.colTooltip }}"> {{
+                col.colName }} </mat-header-cell>
+            <mat-cell *matCellDef="let row" [ngClass]="col.colClass">
+                <ng-container [ngSwitch]="col.colType">
+                    <div *ngSwitchCase="'custom'">
+                        <ng-template [ngTemplateOutlet]="additionalHtml"
+                            [ngTemplateOutletContext]="{ item: getItemForAdditionalHtml(col, row)}">
+                        </ng-template>
+                    </div>
+                    <div *ngSwitchDefault>
+                        {{ row[col.colId] }}
+                    </div>
                 </ng-container>
-                <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        {{ 'SMTH' }}
-                    </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="visibleColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: visibleColumns"></mat-row>
-        </mat-table>
-        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="objectList.length"
-            showFirstLastButtons>
-        </mat-paginator>
-    </div>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <div class="container d-flex">
+                    <mat-icon *ngIf="displayActionsContains('save')" (click)="onEdit(row)">create</mat-icon>
+                    <ng-template [ngTemplateOutlet]="additionalActions"
+                        [ngTemplateOutletContext]="{ item: getItemForAdditionalActions(row) }">
+                    </ng-template>
+                    <mat-icon *ngIf="displayActionsContains('delete')" (click)="onDelete(row)">delete_forever</mat-icon>
+                </div>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="visibleColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: visibleColumns"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="objectList.length"
+        showFirstLastButtons>
+    </mat-paginator>
+</div>

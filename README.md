@@ -49,3 +49,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 2. Create module: ng g m modules/ngx-translate
 3. Create message translations in assets/i18n/en/de/ro.json
 4. Language can be changed dynamically by TranslateService.use(DESIRED-LANGUAGE)
+
+## Add mat-icon css files
+There are several methods you can benefit from using these css files:
+1. Directly from google apis: in style.scss: @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+2. Having them self hosted:
+    1. npm install material-icons --save
+    2. in style.scss: @import 'material-icons/iconfont/material-icons.css';

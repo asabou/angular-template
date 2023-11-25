@@ -6,6 +6,8 @@ import { AbstractComponent } from '../model/abstract-component.model';
 import { AbstractService } from '../model/abstract-service.model';
 import { MessageService } from '../../utils/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { MyStorageService } from '../../utils/storages/my-storage.service';
 
 @Component({
   standalone: true,
@@ -25,11 +27,13 @@ export abstract class AbstractSearchComponent<T extends AbstractBaseEntity, S ex
 
   constructor(
     public service: AbstractService<T, S>,
-    messageService: MessageService,
     public router: Router,
-    public activeRoute: ActivatedRoute
+    public activeRoute: ActivatedRoute,
+    messageService: MessageService,
+    translateService: TranslateService,
+    storageService: MyStorageService
   ) {
-    super(messageService);
+    super(messageService, translateService, storageService);
     this.createSearchObject();
   }
 

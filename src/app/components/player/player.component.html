@@ -1,1 +1,11 @@
-<app-table [objectList]="list" [tableId]="getTableId()"></app-table>
+<div class="container">
+    <app-player-search
+        (searchStart)="onSearchStart($event)"
+        (notify)="onNotify($event)"
+    ></app-player-search>
+    <div class="border border-secondary">
+        <app-table [objectList]="objList" [service]="service" [tableId]="getTableId()" [displayActions]="getDisplayActions()" [isProcessing]="isSearchInProgress"
+            (addItem)="addItem($event)" (deleteItem)="deleteItem($event)" (editItem)="editItem($event)"
+        ></app-table>
+    </div>
+</div>

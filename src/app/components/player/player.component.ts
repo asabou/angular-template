@@ -1,30 +1,49 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Player } from './shared/player.model';
+import { Component } from '@angular/core';
 import { TableComponent } from '../../abstracts/table/table.component';
+import { Player } from './shared/player.model';
+import { ToastrModule } from 'ngx-toastr';
+import { ToastService } from '../../utils/toast.service';
+import { PlayerSearchComponent } from './player-search/player-search.component';
+import { FormsModule } from '@angular/forms';
+import { AbstractDisplayComponent } from '../../abstracts/display/abstract-display.component';
+import { PlayerSearchObject } from './shared/player-search.model';
+import { PlayerService } from './shared/player.service';
+import { MessageService } from '../../utils/message.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MyStorageService } from '../../utils/storages/my-storage.service';
+import { TableItemAction } from '../../abstracts/table/shared/table-item-action.model';
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [CommonModule, TableComponent],
+  imports: [CommonModule, FormsModule, TableComponent, ToastrModule, PlayerSearchComponent],
+  providers: [ToastService, PlayerService, MessageService],
   templateUrl: './player.component.html',
   styleUrl: './player.component.scss'
 })
-export class PlayerComponent {
-  list: Player[] = [
-   
-  ]
+export class PlayerComponent extends AbstractDisplayComponent<Player, PlayerSearchObject, PlayerService> {
+ 
+  constructor(
+    playerService: PlayerService,
+    messageService: MessageService,
+    matDialog: MatDialog,
+    activeRoute: ActivatedRoute,
+    router: Router,
+    toast: ToastService,
+    storage: MyStorageService
+    ) {
+      super(playerService, messageService, matDialog, activeRoute, router, toast, storage);
+    }
 
-  constructor() {
-    this.list = [
-      new Player({'id': 1, 'firstName': "Sabou", "lastName": "Alexandru", "birthDate": new Date(), "nationality": "Romanian", "salary": "101", "photo": "", "retired": false}),
-      new Player({'id': 2, 'firstName': "Sabou", "lastName": "Alexandru", "birthDate": new Date(), "nationality": "Romanian", "salary": "102", "photo": "", "retired": false}),
-      new Player({'id': 3, 'firstName': "Sabou", "lastName": "Alexandru", "birthDate": new Date(), "nationality": "Romanian", "salary": "103", "photo": "", "retired": false}),
-      new Player({'id': 4, 'firstName': "Sabou", "lastName": "Alexandru", "birthDate": new Date(), "nationality": "Romanian", "salary": "106", "photo": "", "retired": false}),
-      new Player({'id': 5, 'firstName': "Sabou", "lastName": "Alexandru", "birthDate": new Date(), "nationality": "Romanian", "salary": "104", "photo": "", "retired": false}),
-      new Player({'id': 6, 'firstName': "Sabou", "lastName": "Alexandru", "birthDate": new Date(), "nationality": "Romanian", "salary": "103", "photo": "", "retired": false})
-    ]
+  override getTableId(): string { return "players"; }
+
+  override getDisplayActions(): string[]  {
+    return ["delete", "save", "add"]
   }
 
-  getTableId(): string { return "players"; }
+  override openSaveDialog(tia: TableItemAction<Player>): void {
+    console.log(tia);
+  }
 }

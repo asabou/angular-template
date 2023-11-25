@@ -4,7 +4,6 @@ import { LocalStorageService } from './local-storage.service';
 import { MemoryStorageService } from './memory-storage.service';
 import { HttpClient } from '@angular/common/http';
 import { LANG } from '../constants.model';
-import { TableData } from '../../abstracts/table/shared/table-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +56,7 @@ export class MyStorageService {
       let keys: any = Object.keys(table);
       for (let key of keys) {
         let item = this.storage.getItem(key);
-        if (!!item) {
+        if (!item) {
           this.setTableData(key, table[key]);
         }
       }

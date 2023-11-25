@@ -9,7 +9,7 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideToastr({closeButton: true}),
+    provideToastr(),
     provideAnimations(),
     provideHttpClient(withFetch())
   ]
