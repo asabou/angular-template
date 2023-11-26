@@ -1,5 +1,5 @@
 import { AbstractSearchObject } from "../../../abstracts/model/abstract-search.model";
-import { EMPTY_STRING } from "../../../utils/constants.model";
+import { EMPTY_STRING } from "../../../utils/models/constants.model";
 
 export class PlayerSearchObject extends AbstractSearchObject {
 

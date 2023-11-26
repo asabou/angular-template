@@ -10,7 +10,7 @@ export class ToastService {
 
   error(
     message?: string,
-    title?: string,
+    title: string = "Error",
     configs?: Partial<IndividualConfig>
     ): ActiveToast<any> {
       configs = {
@@ -25,7 +25,7 @@ export class ToastService {
 
     success(
       message?: string,
-      title?: string,
+      title: string = "Success",
       configs?: Partial<IndividualConfig>
       ): ActiveToast<any> {
         configs = {

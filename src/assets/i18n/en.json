@@ -1,0 +1,16 @@
+{
+    "general": {
+        "buttons": {
+            "ok": "OK",
+            "cancel": "Cancel",
+            "yes": "Yes",
+            "no": "No"
+        },
+        "messages": {
+            "ask-confirm": "Are you sure you want to delete [ {{ name }} ] - {{ identifiers }} ?",
+            "success": {
+                "0001": "{{ record }} deleted successfully"
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@ import { AbstractBaseEntity } from '../model/abstract-base-entity.model';
 import { AbstractSearchObject } from '../model/abstract-search.model';
 import { AbstractComponent } from '../model/abstract-component.model';
 import { AbstractService } from '../model/abstract-service.model';
-import { MessageService } from '../../utils/message.service';
+import { MessageService } from '../../utils/services/message.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MyStorageService } from '../../utils/storages/my-storage.service';

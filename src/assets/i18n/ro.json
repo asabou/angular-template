@@ -1,0 +1,16 @@
+{
+    "general": {
+        "buttons": {
+            "ok": "OK",
+            "cancel": "Cancel",
+            "yes": "Da",
+            "no": "Nu"
+        },
+        "messages": {
+            "ask-confirm": "Sigur vrei să ștergi [ {{ name }} ] - {{ identifiers }} ?",
+            "success": {
+                "0001": "{{ record }} s-a șters cu succes"
+            }
+        }
+    }
+}

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 import { MemoryStorageService } from './memory-storage.service';
 import { HttpClient } from '@angular/common/http';
-import { LANG } from '../constants.model';
+import { LANG } from '../models/constants.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,7 @@ export class MyStorageService {
   }
 
   public getLanguage(): string {
-    return this.storage.getItem(LANG) || "en";
+    return this.storage.getItem(LANG) || "ro";
   }
 
   public setTableData(tableId: any, tableData: any): void {

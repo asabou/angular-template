@@ -3,8 +3,8 @@ import { Component } from "@angular/core";
 import { TranslateService, TranslateStore } from "@ngx-translate/core";
 import { Subscription } from "rxjs";
 import { NgxTranslateModule } from "../../modules/ngx-translate/ngx-translate.module";
-import { LANGUAGES } from "../../utils/constants.model";
-import { MessageService } from "../../utils/message.service";
+import { LANGUAGES, RELOAD_SEARCH } from "../../utils/models/constants.model";
+import { MessageService } from "../../utils/services/message.service";
 import { MyStorageService } from "../../utils/storages/my-storage.service";
 
 @Component({
@@ -30,10 +30,9 @@ export abstract class AbstractComponent {
         public storageService: MyStorageService
         ) {
         this.subscription = this.messageService.getMessages().subscribe(message => {
-            console.log(message);
             //TODO: do the action we want depending on the message  
             //for example, if the message is to reload the search action after we delete something
-            if (message === 'reloadSearch') { 
+            if (message.text === RELOAD_SEARCH) { 
                 this.searchEntity(); 
             }
         });

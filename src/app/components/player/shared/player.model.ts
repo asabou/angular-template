@@ -1,5 +1,5 @@
 import { AbstractBaseEntity } from "../../../abstracts/model/abstract-base-entity.model";
-import { EMPTY_STRING } from "../../../utils/constants.model";
+import { EMPTY_STRING } from "../../../utils/models/constants.model";
 
 export class Player extends AbstractBaseEntity {
     id!: number;
@@ -13,6 +13,7 @@ export class Player extends AbstractBaseEntity {
 
     constructor(data: any) {
         super();
+        this.reset();
         Object.assign(this, data);
     }
 
@@ -34,8 +35,5 @@ export class Player extends AbstractBaseEntity {
         this.retired = false;
     }
 
-    override getEntityName(): string {
-        return "Player";
-    }
-    
+    override _entityName: string = "Player";
 }

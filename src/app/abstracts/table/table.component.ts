@@ -1,27 +1,30 @@
 import { CommonModule, NgFor, NgForOf } from '@angular/common';
-import { AfterViewInit, Component, ContentChild, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ContentChild, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { AdditionalActionsDirective } from '../../directives/additional-actions.directive';
 import { AdditionalHtmlDirective } from '../../directives/additional-html.directive';
 import { NgxTranslateModule } from '../../modules/ngx-translate/ngx-translate.module';
-import { MessageService } from '../../utils/message.service';
+import { DialogUtils } from '../../utils/models/dialog-utils.model';
+import { MessageService } from '../../utils/services/message.service';
 import { MyStorageService } from '../../utils/storages/my-storage.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { FilterColumnsComponent } from '../filter-columns/filter-columns.component';
 import { AbstractBaseEntity } from '../model/abstract-base-entity.model';
-import { AbstractComponent } from '../model/abstract-component.model';
 import { AbstractSearchObject } from '../model/abstract-search.model';
 import { AbstractService } from '../model/abstract-service.model';
 import { TableColumn } from './shared/table-column.model';
 import { TableData } from './shared/table-data.model';
 import { TableItemAction } from './shared/table-item-action.model';
+import { ENTITY_NAME } from '../../utils/models/constants.model';
+import { AbstractComponent } from '../model/abstract-component.model';
 
 
 @Component({
@@ -51,13 +54,16 @@ import { TableItemAction } from './shared/table-item-action.model';
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
-export class TableComponent extends AbstractComponent
+export class TableComponent 
+  extends AbstractComponent
   implements OnInit, AfterViewInit {
 
   constructor(
     messageService: MessageService,
     translate: TranslateService,
-    storageService: MyStorageService
+    storageService: MyStorageService,
+    private matDialog: MatDialog,
+    private ref: ChangeDetectorRef
   ) {
     super(messageService, translate, storageService);
   }
@@ -68,7 +74,7 @@ export class TableComponent extends AbstractComponent
   @Input() tableId!: string;
   @Input() service!: AbstractService<AbstractBaseEntity, AbstractSearchObject>;
   @Input() isProcessing: boolean = false;
-  @Input() searchOnj!: AbstractSearchObject;
+  @Input() searchObj!: AbstractSearchObject;
   @Input() pageSizeOptions: number[] = [5, 10, 15, 20, 100];
   @Input() pageSize: number = 5;
 
@@ -89,6 +95,9 @@ export class TableComponent extends AbstractComponent
   identifiers: string[] = [];
   ids: string[] = [];
   mandatoryFields: string[] = [];
+
+  confirmDialog?: MatDialogRef<ConfirmDialogComponent>;
+  filterColumnsDialogRef?: MatDialogRef<FilterColumnsComponent>;
 
   ngOnInit(): void {
     this.getTableColumns();
@@ -133,41 +142,48 @@ export class TableComponent extends AbstractComponent
 
 
   getItemForAdditionalHtml(column: TableColumn, row: any): TableItemAction<any> {
-    let tableItemAction = this.getTableItemAction();
+    let tableItemAction = this.getTableItemAction(row);
     tableItemAction.column = column;
-    tableItemAction.item = row;
-    return tableItemAction;
-  }
-
-  getItemForAdditionalActions(row: any): any {
-    let tableItemAction = this.getTableItemAction();
-    tableItemAction.item = row;
     return tableItemAction;
   }
 
   onEdit(row: any): void {
-    let tableItemAction = this.getTableItemAction();
-    tableItemAction.item = row;
+    let tableItemAction = this.getTableItemAction(row);
     this.editItem.emit(tableItemAction);
   }
 
   onDelete(row: any): void {
-    let tableItemAction = this.getTableItemAction();
-    tableItemAction.item = row;
-    this.deleteItem.emit(tableItemAction);
+    let tableItemAction = this.getTableItemAction(row);
+    this.confirmDialog = this.matDialog.open(
+      ConfirmDialogComponent,
+      DialogUtils.createDefaultPanelDialogConfig(500, "dialog")
+    );
+    this.confirmDialog.componentInstance.confirmMessage = this.translate.instant("general.messages.ask-confirm", { 
+        name: tableItemAction.item[ENTITY_NAME], 
+        identifiers: tableItemAction.identifiers.map(identifier => tableItemAction.item[identifier]).join(" / ") 
+      });
+    this.confirmDialog.componentInstance.yes = this.translate.instant("general.buttons.yes");
+    this.confirmDialog.componentInstance.no = this.translate.instant("general.buttons.no");
+    this.confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteItem.emit(tableItemAction);
+      }
+      this.confirmDialog = undefined;
+    });
   }
 
   onAdd(): void {
-    let tableItemAction = this.getTableItemAction();
+    let tableItemAction = this.getTableItemAction(null);
     tableItemAction.isAdd = true;
     this.addItem.emit(tableItemAction);
   }
 
-  private getTableItemAction(): TableItemAction<any> {
+  getTableItemAction(row: any): TableItemAction<any> {
     let tableItemAction = new TableItemAction<any>();
     tableItemAction.identifiers = this.identifiers;
     tableItemAction.isAdd = false;
     tableItemAction.mandatories = this.mandatoryFields;
+    tableItemAction.item = row;
     return tableItemAction;
   }
 }

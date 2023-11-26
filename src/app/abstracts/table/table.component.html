@@ -1,6 +1,6 @@
 <div class="d-flex">
     <div class="fw-bold" title="{{ caption }}" *ngIf="caption">{{ caption }}</div>
-    <mat-icon class="button" style="margin-left: 10px" (click)="onAdd()" title="Add"
+    <mat-icon class="button--flat" style="margin-left: 10px" (click)="onAdd()" title="Add"
         *ngIf="displayActionsContains('add')">
         add_circle_outline
     </mat-icon>
@@ -42,7 +42,7 @@
                 <div class="container d-flex">
                     <mat-icon *ngIf="displayActionsContains('save')" (click)="onEdit(row)">create</mat-icon>
                     <ng-template [ngTemplateOutlet]="additionalActions"
-                        [ngTemplateOutletContext]="{ item: getItemForAdditionalActions(row) }">
+                        [ngTemplateOutletContext]="{ item: getTableItemAction(row) }">
                     </ng-template>
                     <mat-icon *ngIf="displayActionsContains('delete')" (click)="onDelete(row)">delete_forever</mat-icon>
                 </div>

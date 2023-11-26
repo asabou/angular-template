@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { AbstractBaseEntity } from "./abstract-base-entity.model";
 import { AbstractSearchObject } from "./abstract-search.model";
 import { Observable } from "rxjs";
-import { EMPTY_STRING } from "../../utils/constants.model";
+import { EMPTY_STRING } from "../../utils/models/constants.model";
 
 export const SERVER_URL = "rest-server-url"; 
 

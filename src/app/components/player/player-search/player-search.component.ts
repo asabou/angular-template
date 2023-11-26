@@ -5,7 +5,7 @@ import { PlayerSearchObject } from '../shared/player-search.model';
 import { Player } from '../shared/player.model';
 import { PlayerService } from '../shared/player.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from '../../../utils/message.service';
+import { MessageService } from '../../../utils/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MyStorageService } from '../../../utils/storages/my-storage.service';
 import { MatButtonModule } from '@angular/material/button';

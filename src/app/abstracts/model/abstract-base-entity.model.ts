@@ -3,5 +3,5 @@ export abstract class AbstractBaseEntity {
 
     abstract reset(): void;
 
-    abstract getEntityName(): string;
+    abstract _entityName: string;
 }
