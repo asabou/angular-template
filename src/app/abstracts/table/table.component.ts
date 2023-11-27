@@ -1,3 +1,4 @@
+import { DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule, NgFor, NgForOf } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ContentChild, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -5,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,49 +14,54 @@ import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { AdditionalActionsDirective } from '../../directives/additional-actions.directive';
 import { AdditionalHtmlDirective } from '../../directives/additional-html.directive';
 import { NgxTranslateModule } from '../../modules/ngx-translate/ngx-translate.module';
+import { ENTITY_NAME } from '../../utils/models/constants.model';
 import { DialogUtils } from '../../utils/models/dialog-utils.model';
 import { MessageService } from '../../utils/services/message.service';
 import { MyStorageService } from '../../utils/storages/my-storage.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { FilterColumnsComponent } from '../filter-columns/filter-columns.component';
 import { AbstractBaseEntity } from '../model/abstract-base-entity.model';
+import { AbstractComponent } from '../model/abstract-component.model';
 import { AbstractSearchObject } from '../model/abstract-search.model';
 import { AbstractService } from '../model/abstract-service.model';
 import { TableColumn } from './shared/table-column.model';
 import { TableData } from './shared/table-data.model';
 import { TableItemAction } from './shared/table-item-action.model';
-import { ENTITY_NAME } from '../../utils/models/constants.model';
-import { AbstractComponent } from '../model/abstract-component.model';
+import { CsvDownloadComponent } from "../csv-download/csv-download.component";
+
 
 
 @Component({
-  selector: 'app-table',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    NgxTranslateModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule
-  ],
-  providers: [
-    MessageService,
-    MyStorageService,
-    TranslateService,
-    TranslateStore,
-    NgFor,
-    NgForOf,
-    NgModel
-  ],
-  templateUrl: './table.component.html',
-  styleUrl: './table.component.scss'
+    selector: 'app-table',
+    standalone: true,
+    providers: [
+        MessageService,
+        MyStorageService,
+        TranslateService,
+        TranslateStore,
+        NgFor,
+        NgForOf,
+        NgModel
+    ],
+    templateUrl: './table.component.html',
+    styleUrl: './table.component.scss',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        NgxTranslateModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        DragDropModule,
+        MatProgressSpinnerModule,
+        CsvDownloadComponent
+    ]
 })
-export class TableComponent 
+export class TableComponent
   extends AbstractComponent
   implements OnInit, AfterViewInit {
 
@@ -95,7 +102,8 @@ export class TableComponent
   identifiers: string[] = [];
   ids: string[] = [];
   mandatoryFields: string[] = [];
-
+  copyObjectList: AbstractBaseEntity[][] = [];
+  
   confirmDialog?: MatDialogRef<ConfirmDialogComponent>;
   filterColumnsDialogRef?: MatDialogRef<FilterColumnsComponent>;
 
@@ -140,7 +148,6 @@ export class TableComponent
     return this.displayActions.indexOf(action) >= 0;
   }
 
-
   getItemForAdditionalHtml(column: TableColumn, row: any): TableItemAction<any> {
     let tableItemAction = this.getTableItemAction(row);
     tableItemAction.column = column;
@@ -158,10 +165,10 @@ export class TableComponent
       ConfirmDialogComponent,
       DialogUtils.createDefaultPanelDialogConfig(500, "dialog")
     );
-    this.confirmDialog.componentInstance.confirmMessage = this.translate.instant("general.messages.ask-confirm", { 
-        name: tableItemAction.item[ENTITY_NAME], 
-        identifiers: tableItemAction.identifiers.map(identifier => tableItemAction.item[identifier]).join(" / ") 
-      });
+    this.confirmDialog.componentInstance.confirmMessage = this.translate.instant("general.messages.ask-confirm", {
+      name: tableItemAction.item[ENTITY_NAME],
+      identifiers: tableItemAction.identifiers.map(identifier => tableItemAction.item[identifier]).join(" / ")
+    });
     this.confirmDialog.componentInstance.yes = this.translate.instant("general.buttons.yes");
     this.confirmDialog.componentInstance.no = this.translate.instant("general.buttons.no");
     this.confirmDialog.afterClosed().subscribe(result => {
@@ -176,6 +183,22 @@ export class TableComponent
     let tableItemAction = this.getTableItemAction(null);
     tableItemAction.isAdd = true;
     this.addItem.emit(tableItemAction);
+  }
+
+  dropTable(event: any) {
+    this.copyObjectList.push(Array.from(this.objectList));
+    const prevIndex = this.objectList.findIndex((d) => d === event.item.data);
+    moveItemInArray(this.objectList, prevIndex, event.currentIndex);
+    this.dataSource.data = this.objectList;
+  }
+
+  cancelSort(): void {
+    //TODO: perhaps RELOAD_SEARCH is expensive
+    // this.messageService.sendMessage(RELOAD_SEARCH);
+    this.isProcessing = true;
+    this.dataSource.data = this.copyObjectList[0];
+    this.copyObjectList = [];
+    this.isProcessing = false;
   }
 
   getTableItemAction(row: any): TableItemAction<any> {

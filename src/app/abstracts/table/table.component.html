@@ -1,25 +1,29 @@
+<div *ngIf="tableColumns && !tableColumns.length">
+    <mat-spinner [diameter]="100"></mat-spinner>
+</div>
 <div class="d-flex">
     <div class="fw-bold" title="{{ caption }}" *ngIf="caption">{{ caption }}</div>
-    <mat-icon class="button--flat" style="margin-left: 10px" (click)="onAdd()" title="Add"
+    <mat-icon style="margin-left: 10px" (click)="onAdd()" title="Add"
         *ngIf="displayActionsContains('add')">
         add_circle_outline
     </mat-icon>
     <!-- <mat-icon class="button button--flat" style="margin-left: 10px;" (click)="openFilterColumns()"
-        title="Filter/Arrange columns" *ngIf="displayActionsContains('filter')">filter_list</mat-icon>
+        title="Filter/Arrange columns" *ngIf="displayActionsContains('filter')">filter_list</mat-icon> -->
     <app-csv-download *ngIf="displayActionsContains('download') && objectList && objectList.length" [title]="tableId"
         [items]="objectList">
     </app-csv-download>
-    <mat-icon class="button button--flat" style="margin-left: 10px" (click)="dragDrop.emit(objectList)" title="Sort"
+    <mat-icon style="margin-left: 10px" (click)="dragDrop.emit(objectList)" title="Sort"
         *ngIf="displayActionsContains('sort')">
         sort
     </mat-icon>
-    <mat-icon class="button button--flat" style="margin-left: 10px" (click)="cancelSort()" title="Cancel sort"
-        *ngIf="displayActionsContains('cancel-sort')">
+    <mat-icon style="margin-left: 10px" (click)="cancelSort()" title="Cancel sort"
+        *ngIf="displayActionsContains('cancel-sort')" [ngStyle]="{ 'display': !copyObjectList.length ? 'none' : '' }">
         backspace
-    </mat-icon> -->
+    </mat-icon>
 </div>
 <div class="mat-elevation-z8" *ngIf="tableColumns && tableColumns.length">
-    <mat-table [dataSource]="dataSource" matSort>
+    <mat-table [dataSource]="dataSource" matSort cdkDropList [cdkDropListData]="dataSource"
+        (cdkDropListDropped)="dropTable($event)" [cdkDropListDisabled]="!displayActionsContains('sort')">
         <ng-container *ngFor="let col of tableColumns; let index as i" matColumnDef="{{ col.colId }}">
             <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="col.colClass" title="{{ col.colTooltip }}"> {{
                 col.colName }} </mat-header-cell>
@@ -49,8 +53,15 @@
             </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="visibleColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: visibleColumns"></mat-row>
+        <mat-row *matRowDef="let row; columns: visibleColumns" cdkDrag [cdkDragData]="row"
+            [cdkDragDisabled]="!displayActionsContains('sort')"></mat-row>
     </mat-table>
+    <div *ngIf="isProcessing">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div *ngIf="!isProcessing && (!objectList || objectList.length === 0)">
+        {{ 'general.messages.no-records-found' | translate }}
+    </div>
     <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="objectList.length"
         showFirstLastButtons>
     </mat-paginator>

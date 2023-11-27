@@ -8,6 +8,7 @@
         },
         "messages": {
             "ask-confirm": "Are you sure you want to delete [ {{ name }} ] - {{ identifiers }} ?",
+            "no-records-found": "No records found",
             "success": {
                 "0001": "{{ record }} deleted successfully"
             }

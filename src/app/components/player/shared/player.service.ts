@@ -77,8 +77,8 @@ export class PlayerService extends AbstractService<Player, PlayerSearchObject> {
     new Player({ id: 3, firstName: 'Alex2', lastName: 'Sabou1', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '103' }),
     new Player({ id: 4, firstName: 'Alex3', lastName: 'Sabou2', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '104' }),
     new Player({ id: 5, firstName: 'Alex4', lastName: 'Sabou3', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '102' }),
-    new Player({ id: 6, firstName: 'Alex4', lastName: 'Sabou3', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '102' }),
-    new Player({ id: 7, firstName: 'Alex4', lastName: 'Sabou3', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '102' }),
-    new Player({ id: 8, firstName: 'Alex4', lastName: 'Sabou3', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '102' })
+    new Player({ id: 6, firstName: 'Alex5', lastName: 'Sabou3', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '102' }),
+    new Player({ id: 7, firstName: 'Alex6', lastName: 'Sabou3', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '102' }),
+    new Player({ id: 8, firstName: 'Alex7', lastName: 'Sabou3', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '102' })
   ]);
 }

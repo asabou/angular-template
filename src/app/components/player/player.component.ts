@@ -48,7 +48,7 @@ export class PlayerComponent extends AbstractDisplayComponent<Player, PlayerSear
   override getTableId(): string { return "players"; }
 
   override getDisplayActions(): string[]  {
-    return ["delete", "save", "add"]
+    return ["delete", "save", "add", "sort", "cancel-sort", "download"];
   }
 
   override openAddForm(tia: TableItemAction<Player>): void {
@@ -80,5 +80,10 @@ export class PlayerComponent extends AbstractDisplayComponent<Player, PlayerSear
         this.messageService.sendMessage(RELOAD_SEARCH);
       }
     });
+  }
+
+  onSort(players: any): void {
+    //TODO: for now, consider logging the new sorted list
+    console.log(players);
   }
 }

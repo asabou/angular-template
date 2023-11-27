@@ -8,6 +8,7 @@
         },
         "messages": {
             "ask-confirm": "Sigur vrei să ștergi [ {{ name }} ] - {{ identifiers }} ?",
+            "no-records-found": "Nu s-au găsit înregistrări",
             "success": {
                 "0001": "{{ record }} s-a șters cu succes"
             }

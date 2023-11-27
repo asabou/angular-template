@@ -3,9 +3,10 @@
         (searchStart)="onSearchStart($event)"
         (notify)="onNotify($event)"
     ></app-player-search>
-    <div class="border border-secondary">
-        <app-table [objectList]="objList" [service]="service" [tableId]="getTableId()" [displayActions]="getDisplayActions()" [isProcessing]="isSearchInProgress"
-            (addItem)="addItem($event)" (deleteItem)="deleteItem($event)" (editItem)="editItem($event)"
+    <div class="border border-secondary rounded-3">
+        <app-table [objectList]="objList" [service]="service" [tableId]="getTableId()" [displayActions]="getDisplayActions()" 
+            [isProcessing]="isSearchInProgress" [searchObj]="searchObj" caption="Players"
+            (addItem)="addItem($event)" (deleteItem)="deleteItem($event)" (editItem)="editItem($event)" (dragDrop)="onSort($event)"
         ></app-table>
     </div>
 </div>
