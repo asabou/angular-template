@@ -34,6 +34,4 @@ export class Player extends AbstractBaseEntity {
         this.photo = EMPTY_STRING;
         this.retired = false;
     }
-
-    override _entityName: string = "Player";
 }

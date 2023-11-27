@@ -4,13 +4,74 @@
             "ok": "OK",
             "cancel": "Cancel",
             "yes": "Yes",
-            "no": "No"
+            "no": "No",
+            "save": "Save",
+            "delete": "Delete",
+            "edit": "Edit"
+        },
+        "captions": {
+            "player": "Player",
+            "players": "Players",
+            "arrange-columns": "Arrange columns",
+            "save-player": "Save/Edit player",
+            "confirm": "Confirm"
+        },
+        "labels": {
+            "items-per-page": "Items per page:",
+            "first-page": "First page",
+            "previous-page": "Previous page",
+            "next-page": "Next page",
+            "last-page": "Last page",
+            "player": "Player",
+            "players": "Players",
+            "players_entityName": "Player"
+        },
+        "hovers": {
+            "add": "Add record",
+            "arrange-columns": "Arrange/Filter columns",
+            "sort": "Sort result list",
+            "cancel-sort": "Reset sorted list",
+            "download-csv": "Download CSV"
         },
         "messages": {
             "ask-confirm": "Are you sure you want to delete [ {{ name }} ] - {{ identifiers }} ?",
             "no-records-found": "No records found",
             "success": {
                 "0001": "{{ record }} deleted successfully"
+            }
+        }
+    },
+    "players": {
+        "table": {
+            "columns": {
+                "firstName": {
+                    "label": "First name",
+                    "hover": "Player's first name"
+                },
+                "lastName": {
+                    "label": "Last name",
+                    "hover": "Player's first name"
+                },
+                "birthDate": {
+                    "label": "Birth Date",
+                    "hover": "Player's birth date"
+                },
+                "nationality": {
+                    "label": "Nationality",
+                    "hover": "Player's nationality"
+                },
+                "salary": {
+                    "label": "Salary",
+                    "hover": "Player's salary"
+                },
+                "photo": {
+                    "label": "Photo",
+                    "hover": "Player's photo"
+                },
+                "retired": {
+                    "label": "Retired",
+                    "hover": "Is player retired?"
+                }
             }
         }
     }

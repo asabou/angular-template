@@ -4,13 +4,74 @@
             "ok": "OK",
             "cancel": "Cancel",
             "yes": "Da",
-            "no": "Nu"
+            "no": "Nu",
+            "save": "Salvează",
+            "delete": "Șterge",
+            "edit": "Editează"
+        },
+        "captions": {
+            "player": "Jucător",
+            "players": "Jucători",
+            "arrange-columns": "Aranjează coloanele",
+            "save-player": "Salvează/Editează jucător",
+            "confirm": "Confirmare"
+        },
+        "labels": {
+            "items-per-page": "Itemi pe pagină:",
+            "first-page": "Prima pagină",
+            "previous-page": "Pagina anterioară",
+            "next-page": "Următoarea pagină",
+            "last-page": "Utlima pagină",
+            "player": "Jucător",
+            "players": "Jucători",
+            "players_entityName": "Jucătorul"
+        },
+        "hovers": {
+            "add": "Adaugă înregistare",
+            "arrange-columns": "Aranjează/Filtrează coloanele",
+            "sort": "Salvează sortarea listei rezultată",
+            "cancel-sort": "Resetează sortarea",
+            "download-csv": "Descarcă în format CSV"
         },
         "messages": {
             "ask-confirm": "Sigur vrei să ștergi [ {{ name }} ] - {{ identifiers }} ?",
             "no-records-found": "Nu s-au găsit înregistrări",
             "success": {
                 "0001": "{{ record }} s-a șters cu succes"
+            }
+        }
+    },
+    "players": {
+        "table": {
+            "columns": {
+                "firstName": {
+                    "label": "Prenume",
+                    "hover": "Prenumele jucătorului"
+                },
+                "lastName": {
+                    "label": "Nume",
+                    "hover": "Numele de familie al jucătorului"
+                },
+                "birthDate": {
+                    "label": "Data nașterii",
+                    "hover": "Data nașterii jucătorului"
+                },
+                "nationality": {
+                    "label": "Naționalitate",
+                    "hover": "Naționalitatea jucătorului"
+                },
+                "salary": {
+                    "label": "Salar",
+                    "hover": "Salariul jucătorului"
+                },
+                "photo": {
+                    "label": "Fotografie",
+                    "hover": "Fotografia jucătorului"
+                },
+                "retired": {
+                    "label": "Pensionat",
+                    "hover": "Jucătorul este pensionat?"
+                }
             }
         }
     }

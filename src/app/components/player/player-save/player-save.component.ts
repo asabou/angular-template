@@ -9,11 +9,13 @@ import { MessageService } from '../../../utils/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MyStorageService } from '../../../utils/storages/my-storage.service';
 import { ToastService } from '../../../utils/services/toast.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxTranslateModule } from '../../../modules/ngx-translate/ngx-translate.module';
 
 @Component({
   selector: 'app-player-save',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DragDropModule, NgxTranslateModule],
   templateUrl: './player-save.component.html',
   styleUrl: './player-save.component.scss'
 })

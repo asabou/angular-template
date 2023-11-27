@@ -59,12 +59,10 @@ export abstract class AbstractSaveComponent<
   initSaveForm(tia: any): void {
     this.tableItemAction = tia;
     for (let key of Object.keys(this.tableItemAction.item)) {
-      if (key !== ENTITY_NAME) {
-        if (tia.mandatories.indexOf(key) >= 0) {
-          this.saveForm.addControl(key, new FormControl(tia.item[key], [Validators.required, this.formControlValueIsEmpty.bind(this)]));
-        } else {
-          this.saveForm.addControl(key, new FormControl(tia.item[key]));
-        }
+      if (tia.mandatories.indexOf(key) >= 0) {
+        this.saveForm.addControl(key, new FormControl(tia.item[key], [Validators.required, this.formControlValueIsEmpty.bind(this)]));
+      } else {
+        this.saveForm.addControl(key, new FormControl(tia.item[key]));
       }
     }
   }

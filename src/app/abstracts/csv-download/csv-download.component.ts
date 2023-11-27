@@ -10,11 +10,12 @@ import { EMPTY_STRING } from '../../utils/models/constants.model';
   standalone: true,
   imports: [CommonModule, MatIconModule],
   template: `<mat-icon (click)="downloadCSV()"  
-              title="Download CSV">file_download</mat-icon>`
+              title="{{ iconTitle }}">file_download</mat-icon>`
 })
 export class CsvDownloadComponent {
   @Input() items: any[] = [];
   @Input() title: string = EMPTY_STRING;
+  @Input() iconTitle: string = EMPTY_STRING;
   @Input() separator: string = ",";
 
   downloadCSV(): void {

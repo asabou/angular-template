@@ -4,6 +4,7 @@ import { LocalStorageService } from './local-storage.service';
 import { MemoryStorageService } from './memory-storage.service';
 import { HttpClient } from '@angular/common/http';
 import { LANG } from '../models/constants.model';
+import { TableColumn } from '../../abstracts/table/shared/table-column.model';
 
 @Injectable({
   providedIn: 'root'

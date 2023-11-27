@@ -48,7 +48,7 @@ export class PlayerComponent extends AbstractDisplayComponent<Player, PlayerSear
   override getTableId(): string { return "players"; }
 
   override getDisplayActions(): string[]  {
-    return ["delete", "save", "add", "sort", "cancel-sort", "download"];
+    return ["delete", "save", "add", "sort", "cancel-sort", "download", "upload", "filter"];
   }
 
   override openAddForm(tia: TableItemAction<Player>): void {

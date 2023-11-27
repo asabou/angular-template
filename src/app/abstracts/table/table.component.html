@@ -2,31 +2,32 @@
     <mat-spinner [diameter]="100"></mat-spinner>
 </div>
 <div class="d-flex">
-    <div class="fw-bold" title="{{ caption }}" *ngIf="caption">{{ caption }}</div>
-    <mat-icon style="margin-left: 10px" (click)="onAdd()" title="Add"
-        *ngIf="displayActionsContains('add')">
+    <div class="fw-bold" title="{{ 'general.captions.' + tableId | translate }}">{{ 'general.captions.' + tableId | translate }}</div>
+    <mat-icon (click)="onAdd()" title="{{ 'general.hovers.add' | translate }}" *ngIf="displayActionsContains('add')">
         add_circle_outline
     </mat-icon>
-    <!-- <mat-icon class="button button--flat" style="margin-left: 10px;" (click)="openFilterColumns()"
-        title="Filter/Arrange columns" *ngIf="displayActionsContains('filter')">filter_list</mat-icon> -->
-    <app-csv-download *ngIf="displayActionsContains('download') && objectList && objectList.length" [title]="tableId"
-        [items]="objectList">
+    <mat-icon (click)="openFilterColumns()" title="{{ 'general.hovers.arrange-columns' | translate }}"
+        *ngIf="displayActionsContains('filter')">filter_list</mat-icon>
+    <app-csv-download *ngIf="displayActionsContains('download') && objectList && objectList.length" [title]="translate.instant('general.labels.' + tableId)" 
+        [iconTitle]="translate.instant('general.hovers.download-csv')" [items]="objectList">
     </app-csv-download>
-    <mat-icon style="margin-left: 10px" (click)="dragDrop.emit(objectList)" title="Sort"
-        *ngIf="displayActionsContains('sort')">
+    <mat-icon (click)="dragDrop.emit(objectList)" title="{{ 'general.hovers.sort' | translate }}" *ngIf="displayActionsContains('sort')"
+        [ngStyle]="{ 'display': !copyObjectList.length ? 'none' : '' }">
         sort
     </mat-icon>
-    <mat-icon style="margin-left: 10px" (click)="cancelSort()" title="Cancel sort"
-        *ngIf="displayActionsContains('cancel-sort')" [ngStyle]="{ 'display': !copyObjectList.length ? 'none' : '' }">
+    <mat-icon (click)="cancelSort()" title="{{ 'general.hovers.cancel-sort' | translate }}" *ngIf="displayActionsContains('cancel-sort')"
+        [ngStyle]="{ 'display': !copyObjectList.length ? 'none' : '' }">
         backspace
     </mat-icon>
 </div>
 <div class="mat-elevation-z8" *ngIf="tableColumns && tableColumns.length">
-    <mat-table [dataSource]="dataSource" matSort cdkDropList [cdkDropListData]="dataSource"
+    <mat-table [dataSource]="dataSource" matSort cdkDropList [cdkDropListData]="dataSource" 
         (cdkDropListDropped)="dropTable($event)" [cdkDropListDisabled]="!displayActionsContains('sort')">
         <ng-container *ngFor="let col of tableColumns; let index as i" matColumnDef="{{ col.colId }}">
-            <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="col.colClass" title="{{ col.colTooltip }}"> {{
-                col.colName }} </mat-header-cell>
+            <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="col.colClass"
+                title="{{ getColumnTitle(col) }}">
+                {{ getColumnName(col) }}
+            </mat-header-cell>
             <mat-cell *matCellDef="let row" [ngClass]="col.colClass">
                 <ng-container [ngSwitch]="col.colType">
                     <div *ngSwitchCase="'custom'">
@@ -34,7 +35,7 @@
                             [ngTemplateOutletContext]="{ item: getItemForAdditionalHtml(col, row)}">
                         </ng-template>
                     </div>
-                    <div *ngSwitchDefault>
+                    <div *ngSwitchDefault title="{{ row[col.colId] }}">
                         {{ row[col.colId] }}
                     </div>
                 </ng-container>
@@ -44,11 +45,11 @@
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let row">
                 <div class="container d-flex">
-                    <mat-icon *ngIf="displayActionsContains('save')" (click)="onEdit(row)">create</mat-icon>
+                    <mat-icon *ngIf="displayActionsContains('save')" (click)="onEdit(row)" title="{{ 'general.buttons.edit' | translate }}">create</mat-icon>
                     <ng-template [ngTemplateOutlet]="additionalActions"
                         [ngTemplateOutletContext]="{ item: getTableItemAction(row) }">
                     </ng-template>
-                    <mat-icon *ngIf="displayActionsContains('delete')" (click)="onDelete(row)">delete_forever</mat-icon>
+                    <mat-icon *ngIf="displayActionsContains('delete')" (click)="onDelete(row)" title="{{ 'general.buttons.delete' | translate }}">delete_forever</mat-icon>
                 </div>
             </mat-cell>
         </ng-container>

@@ -14,7 +14,7 @@ import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { AdditionalActionsDirective } from '../../directives/additional-actions.directive';
 import { AdditionalHtmlDirective } from '../../directives/additional-html.directive';
 import { NgxTranslateModule } from '../../modules/ngx-translate/ngx-translate.module';
-import { ENTITY_NAME } from '../../utils/models/constants.model';
+import { EMPTY_STRING, ENTITY_NAME } from '../../utils/models/constants.model';
 import { DialogUtils } from '../../utils/models/dialog-utils.model';
 import { MessageService } from '../../utils/services/message.service';
 import { MyStorageService } from '../../utils/storages/my-storage.service';
@@ -75,7 +75,6 @@ export class TableComponent
     super(messageService, translate, storageService);
   }
 
-  @Input() caption!: string;
   @Input() objectList: AbstractBaseEntity[] = [];
   @Input() displayActions: string[] = [];
   @Input() tableId!: string;
@@ -97,15 +96,16 @@ export class TableComponent
   @ContentChild(AdditionalActionsDirective, { read: TemplateRef }) additionalActions!: TemplateRef<any>;
   @ContentChild(AdditionalHtmlDirective, { read: TemplateRef }) additionalHtml!: TemplateRef<any>;
 
+  tableData!: TableData;
   visibleColumns: string[] = [];
   tableColumns: TableColumn[] = [];
   identifiers: string[] = [];
-  ids: string[] = [];
   mandatoryFields: string[] = [];
   copyObjectList: AbstractBaseEntity[][] = [];
   
   confirmDialog?: MatDialogRef<ConfirmDialogComponent>;
   filterColumnsDialogRef?: MatDialogRef<FilterColumnsComponent>;
+  itemsPerPage: string = EMPTY_STRING;
 
   ngOnInit(): void {
     this.getTableColumns();
@@ -118,11 +118,11 @@ export class TableComponent
   getTableColumns(): void {
     this.tableColumns = [];
     this.visibleColumns = [];
-    let tableData: TableData = this.storageService.getTableData(this.tableId);
-    this.identifiers = tableData.primaryIdentifiers;
-    this.mandatoryFields = tableData.fields.filter(field => field.colMandatory).map(field => field.colId);
-    this.visibleColumns = tableData.fields.filter(field => field.colVisible).map(field => field.colId);
-    this.tableColumns = tableData.fields;
+    this.tableData = this.storageService.getTableData(this.tableId);
+    this.identifiers = this.tableData.primaryIdentifiers;
+    this.mandatoryFields = this.tableData.fields.filter(field => field.colMandatory).map(field => field.colId);
+    this.visibleColumns = this.tableData.fields.filter(field => field.colVisible).map(field => field.colId);
+    this.tableColumns = this.tableData.fields;
     if (this.displayActions && this.displayActions.length) {
       this.visibleColumns.push("actions");
     }
@@ -135,6 +135,8 @@ export class TableComponent
   initDataSource(): void {
     this.dataSource.data = this.objectList;
     this.dataSource.sort = this.sort;
+    //TODO: translations of labels does not work
+    // this.paginator._intl = this.myPaginatorIntl;
     this.dataSource.paginator = this.paginator;
   }
 
@@ -166,7 +168,7 @@ export class TableComponent
       DialogUtils.createDefaultPanelDialogConfig(500, "dialog")
     );
     this.confirmDialog.componentInstance.confirmMessage = this.translate.instant("general.messages.ask-confirm", {
-      name: tableItemAction.item[ENTITY_NAME],
+      name: this.translate.instant("general.labels." + this.tableId + ENTITY_NAME),
       identifiers: tableItemAction.identifiers.map(identifier => tableItemAction.item[identifier]).join(" / ")
     });
     this.confirmDialog.componentInstance.yes = this.translate.instant("general.buttons.yes");
@@ -201,6 +203,22 @@ export class TableComponent
     this.isProcessing = false;
   }
 
+  openFilterColumns(): void {
+    this.filterColumnsDialogRef = this.matDialog.open(
+      FilterColumnsComponent,
+      DialogUtils.createDefaultPanelDialogConfig(400, "dialog")
+    );
+    this.filterColumnsDialogRef.disableClose = true;
+    this.filterColumnsDialogRef.componentInstance.tableData = this.tableData;
+    this.filterColumnsDialogRef.componentInstance.tableId = this.tableId;
+    this.filterColumnsDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getTableColumns();
+      }
+      this.filterColumnsDialogRef = undefined;
+    });
+  }
+
   getTableItemAction(row: any): TableItemAction<any> {
     let tableItemAction = new TableItemAction<any>();
     tableItemAction.identifiers = this.identifiers;
@@ -208,5 +226,13 @@ export class TableComponent
     tableItemAction.mandatories = this.mandatoryFields;
     tableItemAction.item = row;
     return tableItemAction;
+  }
+
+  getColumnTitle(col: TableColumn): string {
+    return this.translate.instant(this.tableId + ".table.columns." + col.colId + ".hover");
+  }
+
+  getColumnName(col: TableColumn): string {
+    return this.translate.instant(this.tableId + ".table.columns." + col.colId + ".label");
   }
 }

@@ -1,1 +1,24 @@
-<p>filter-columns works!</p>
+<div cdkDrag cdkDragRootElement='.cdk-overlay-pane' cdkDragHandle>
+    <div mat-dialog-title>{{ "general.captions.arrange-columns" | translate }}</div>
+</div>
+<div mat-dialog-content>
+    <div cdkDropList class="ms-5 me-5 d-block" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let col of tableData.fields" cdkDrag>
+            <div class="border border-dark border-3 rounded d-flex" title="{{ getColumnTitle(col) }}">
+                <input type="checkbox" class="checkbox ms-2" autocomplete="off" name="col.colId"
+                    [checked]="col.colVisible" (click)="updateVisibleCols($event, col.colId)" />
+                <div class="ms-2">{{ getColumnName(col) }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions class="mb-1">
+    <div class="text-end">
+        <button class="btn btn-light" type="submit" mat-button (click)="save()">
+            {{ "general.buttons.save" | translate }}
+        </button>
+        <button class="btn btn-light" type="button" mat-button (click)="cancel()">
+            {{ "general.buttons.cancel" | translate }}
+        </button>
+    </div>
+</div>

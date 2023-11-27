@@ -1,31 +1,17 @@
-<div  
-  cdkDrag
-  cdkDragRootElement='.cdk-overlay-pane' 
-  cdkDragHandle>
-  <div id="title" mat-dialog-title>Confirm</div>
-  <div mat-dialog-content>
-    <mat-icon>help</mat-icon>
-    <div class="mat-dialog-message">{{ confirmMessage }}</div>
-  </div>
-  <div mat-dialog-actions>
-    <div class="dialogButtonsContainer text-end">
-      <button
-        mat-button
-        mat-dialog-close
-        class="btn btn-light buttonOkDialog"
-        (click)="dialogRef.close(true)"
-      >
-        {{ yes }}
-      </button>
-      <button
-        mat-button
-        mat-dialog-close
-        class="btn btn-light buttonCancelDialog"
-        (click)="dialogRef.close()"
-        autofocus
-      >
-        {{ no }}
-      </button>
-    </div>
+<div cdkDrag cdkDragRootElement='.cdk-overlay-pane' cdkDragHandle>
+  <div mat-dialog-title>{{ 'general.captions.confirm' | translate }}</div>
+</div>
+<div mat-dialog-content class="d-flex">
+  <mat-icon>help</mat-icon>
+  <div class="ms-2">{{ confirmMessage }}</div>
+</div>
+<div mat-dialog-actions>
+  <div class="text-end">
+    <button mat-button mat-dialog-close class="btn btn-light buttonOkDialog" (click)="dialogRef.close(true)">
+      {{ yes }}
+    </button>
+    <button mat-button mat-dialog-close class="btn btn-light buttonCancelDialog" (click)="dialogRef.close()" autofocus>
+      {{ no }}
+    </button>
   </div>
 </div>

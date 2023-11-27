@@ -1,6 +1,8 @@
-<p>player-save works!</p>
+<div cdkDrag cdkDragRootElement='.cdk-overlay-pane' cdkDragHandle>
+    <div mat-dialog-title>{{ 'general.captions.save-player' | translate }}</div>
+</div>
 <div class="d-flex">
-    <button mat-button (click)="save()" class="btn">Save</button>
-    <button mat-button (click)="cancel()" class="btn">Cancel</button>
+    <button mat-button (click)="save()" class="btn">{{ 'general.buttons.save' | translate }}</button>
+    <button mat-button (click)="cancel()" class="btn">{{ 'general.buttons.cancel' | translate }}</button>
 </div>
 

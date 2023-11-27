@@ -17,9 +17,6 @@ import { MyStorageService } from '../../utils/storages/my-storage.service';
 export abstract class AbstractSearchComponent<T extends AbstractBaseEntity, S extends AbstractSearchObject>
   extends AbstractComponent {
 
-  readonly SEARCH = "Search";
-  readonly CLEAR = "Clear";
-
   searchObj!: S;
 
   @Output() searchStart: EventEmitter<S> = new EventEmitter();
