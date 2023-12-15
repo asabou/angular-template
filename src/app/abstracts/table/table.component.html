@@ -11,6 +11,7 @@
     <app-csv-download *ngIf="displayActionsContains('download') && objectList && objectList.length" [title]="translate.instant('general.labels.' + tableId)" 
         [iconTitle]="translate.instant('general.hovers.download-csv')" [items]="objectList">
     </app-csv-download>
+    <app-csv-upload (notify)="csvUpload.emit($event)" *ngIf="displayActionsContains('upload')"></app-csv-upload>
     <mat-icon (click)="dragDrop.emit(objectList)" title="{{ 'general.hovers.sort' | translate }}" *ngIf="displayActionsContains('sort')"
         [ngStyle]="{ 'display': !copyObjectList.length ? 'none' : '' }">
         sort
@@ -60,7 +61,7 @@
     <div *ngIf="isProcessing">
         <mat-spinner [diameter]="50"></mat-spinner>
     </div>
-    <div *ngIf="!isProcessing && (!objectList || objectList.length === 0)">
+    <div *ngIf="!isProcessing && objectList.length === 0">
         {{ 'general.messages.no-records-found' | translate }}
     </div>
     <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="objectList.length"

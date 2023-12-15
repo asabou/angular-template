@@ -71,7 +71,7 @@ export class PlayerService extends AbstractService<Player, PlayerSearchObject> {
     return params;
   }
 
-  private list: Observable<Player[]> = of([
+  list: Observable<Player[]> = of([
     new Player({ id: 1, firstName: 'Alex', lastName: 'Sabou', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '100' }),
     new Player({ id: 2, firstName: 'Alex1', lastName: 'Sabou1', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '101' }),
     new Player({ id: 3, firstName: 'Alex2', lastName: 'Sabou1', birthDate: new Date().getDay(), nationality: 'romanian', retired: false, salary: '103' }),

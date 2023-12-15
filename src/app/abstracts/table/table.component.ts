@@ -28,8 +28,7 @@ import { TableColumn } from './shared/table-column.model';
 import { TableData } from './shared/table-data.model';
 import { TableItemAction } from './shared/table-item-action.model';
 import { CsvDownloadComponent } from "../csv-download/csv-download.component";
-
-
+import { CsvUploadComponent } from '../csv-upload/csv-upload.component';
 
 @Component({
     selector: 'app-table',
@@ -58,7 +57,8 @@ import { CsvDownloadComponent } from "../csv-download/csv-download.component";
         MatIconModule,
         DragDropModule,
         MatProgressSpinnerModule,
-        CsvDownloadComponent
+        CsvDownloadComponent,
+        CsvUploadComponent
     ]
 })
 export class TableComponent
@@ -88,10 +88,12 @@ export class TableComponent
   @Output() deleteItem: EventEmitter<TableItemAction<any>> = new EventEmitter();
   @Output() editItem: EventEmitter<TableItemAction<any>> = new EventEmitter();
   @Output() dragDrop: EventEmitter<AbstractBaseEntity[]> = new EventEmitter();
+  @Output() csvUpload: EventEmitter<any> = new EventEmitter();
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(CsvUploadComponent, { static: true }) csvUploadComponent!: CsvUploadComponent;
 
   @ContentChild(AdditionalActionsDirective, { read: TemplateRef }) additionalActions!: TemplateRef<any>;
   @ContentChild(AdditionalHtmlDirective, { read: TemplateRef }) additionalHtml!: TemplateRef<any>;

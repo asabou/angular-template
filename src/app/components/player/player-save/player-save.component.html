@@ -1,8 +1,11 @@
 <div cdkDrag cdkDragRootElement='.cdk-overlay-pane' cdkDragHandle>
     <div mat-dialog-title>{{ 'general.captions.save-player' | translate }}</div>
 </div>
-<div class="d-flex">
-    <button mat-button (click)="save()" class="btn">{{ 'general.buttons.save' | translate }}</button>
-    <button mat-button (click)="cancel()" class="btn">{{ 'general.buttons.cancel' | translate }}</button>
+<div mat-dialog-content>
+    <div>TODO</div>
+</div>
+<div mat-dialog-actions class="mb-1">
+    <button mat-button (click)="save()" class="btn btn-light" type="submit" [disabled]="!saveForm.valid">{{ 'general.buttons.save' | translate }}</button>
+    <button mat-button (click)="cancel()" class="btn btn-light" type="button">{{ 'general.buttons.cancel' | translate }}</button>
 </div>
 

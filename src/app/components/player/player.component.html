@@ -6,7 +6,9 @@
     <div class="border border-secondary rounded-3">
         <app-table [objectList]="objList" [service]="service" [tableId]="getTableId()" [displayActions]="getDisplayActions()" 
             [isProcessing]="isSearchInProgress" [searchObj]="searchObj"
-            (addItem)="addItem($event)" (deleteItem)="deleteItem($event)" (editItem)="editItem($event)" (dragDrop)="onSort($event)"
+            (addItem)="addItem($event)" (deleteItem)="deleteItem($event)" 
+            (editItem)="editItem($event)" (dragDrop)="onSort($event)"
+            (csvUpload)="onCsvUpload($event)"
         ></app-table>
     </div>
 </div>

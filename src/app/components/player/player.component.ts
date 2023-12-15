@@ -17,8 +17,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { NgxTranslateModule } from '../../modules/ngx-translate/ngx-translate.module';
 import { PlayerSaveComponent } from './player-save/player-save.component';
 import { DialogUtils } from '../../utils/models/dialog-utils.model';
-import { RELOAD_SEARCH } from '../../utils/models/constants.model';
+import { EMPTY_STRING, RELOAD_SEARCH } from '../../utils/models/constants.model';
 import { ToastService } from '../../utils/services/toast.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-player',
@@ -32,7 +33,7 @@ export class PlayerComponent extends AbstractDisplayComponent<Player, PlayerSear
   saveDialogRef!: MatDialogRef<PlayerSaveComponent>;
 
   constructor(
-    playerService: PlayerService,
+    private playerService: PlayerService,
     toast: ToastService,
     messageService: MessageService,
     translateService: TranslateService,
@@ -41,13 +42,13 @@ export class PlayerComponent extends AbstractDisplayComponent<Player, PlayerSear
     private router: Router,
     private storage: MyStorageService,
     private matDialog: MatDialog
-    ) {
-      super(playerService, toast, messageService, translateService, storageService);
-    }
+  ) {
+    super(playerService, toast, messageService, translateService, storageService);
+  }
 
   override getTableId(): string { return "players"; }
 
-  override getDisplayActions(): string[]  {
+  override getDisplayActions(): string[] {
     return ["delete", "save", "add", "sort", "cancel-sort", "download", "upload", "filter"];
   }
 
@@ -83,7 +84,19 @@ export class PlayerComponent extends AbstractDisplayComponent<Player, PlayerSear
   }
 
   onSort(players: any): void {
-    //TODO: for now, consider logging the new sorted list
-    console.log(players);
+    //sort the list by overriding the current list
+    this.playerService.list = of(players);
+    //TODO: this should be done in another way (perhaps update the sorting on tha backend side)
+  }
+
+  onCsvUpload(fileEvent: any): void {
+    console.log(fileEvent);
+  }
+
+  readFileContent(file: any) {
+    const reader = new FileReader()
+    return new Promise(() => {
+      reader.readAsText(file)
+    });
   }
 }
